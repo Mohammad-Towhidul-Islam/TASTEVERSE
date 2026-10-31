@@ -1,0 +1,5 @@
+import {NextResponse} from 'next/server'
+import {getSession} from '../../../../lib/auth'
+import {prisma} from '../../../../lib/prisma'
+export async function GET(){const s=await getSession();if(s?.role!=='ADMIN')return NextResponse.json({error:'Unauthorized'},{status:401});const orders=await prisma.order.findMany({include:{items:true},orderBy:{createdAt:'desc'},take:100});return NextResponse.json({orders})}
+export async function PATCH(req){const s=await getSession();if(s?.role!=='ADMIN')return NextResponse.json({error:'Unauthorized'},{status:401});const {id,status}=await req.json();const allowed=['PENDING','CONFIRMED','PREPARING','READY','OUT_FOR_DELIVERY','COMPLETED','CANCELLED'];if(!allowed.includes(status))return NextResponse.json({error:'Invalid status'},{status:400});const order=await prisma.order.update({where:{id},data:{status}});return NextResponse.json({order})}

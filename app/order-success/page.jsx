@@ -1,0 +1,2 @@
+import Link from 'next/link'
+export default function Success({searchParams}){return <main className="form-page"><div className="form-card text-center"><div className="text-5xl">🎉</div><h1 className="text-3xl font-black mt-4">Thank you for your order!</h1><p className="text-stone-500 mt-3">Your order reference: <b>{searchParams.order||'Received'}</b></p><Link className="pill inline-block mt-6" href="/">Back to home</Link></div></main>}

@@ -1,0 +1,3 @@
+import {NextResponse} from 'next/server'
+import {prisma} from '../../../../../lib/prisma'
+export async function POST(req){const f=await req.formData(),tran=String(f.get('tran_id')||'');if(tran)await prisma.order.updateMany({where:{orderNumber:tran,paymentStatus:'PENDING'},data:{paymentStatus:'FAILED'}});return NextResponse.redirect(new URL('/checkout?payment=failed',process.env.NEXT_PUBLIC_APP_URL))}
