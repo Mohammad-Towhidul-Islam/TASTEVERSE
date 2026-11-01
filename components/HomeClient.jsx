@@ -45,7 +45,7 @@ const demo = [
     slug: 'royal-chicken-biryani',
     description: 'Fragrant basmati rice, tender chicken and aromatic spices.',
     price: 38000,
-    image: 'https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=85',
     category: { name: 'Biryani' }
   },
   {
@@ -85,10 +85,18 @@ function Inner({ initialProducts = [] }) {
   const [mobileMenu, setMobileMenu] = useState(false)
   const [activeNav, setActiveNav] = useState('home')
 
-  const products = useMemo(
-    () => initialProducts.length ? initialProducts : demo,
-    [initialProducts]
-  )
+  const products = useMemo(() => {
+    const source = initialProducts.length ? initialProducts : demo
+
+    return source.map((p) =>
+      p.slug === 'royal-chicken-biryani'
+        ? {
+            ...p,
+            image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=85'
+          }
+        : p
+    )
+  }, [initialProducts])
 
   const featured = products.filter(p => p.featured)
   const slides = featured.length ? featured : demo
